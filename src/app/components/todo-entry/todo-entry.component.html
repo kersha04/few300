@@ -1,0 +1,22 @@
+<form [formGroup]="form"
+      (ngSubmit)="submit()">
+  <div class="field-container">
+    <mat-label>Enter Your Task</mat-label>
+    <mat-form-field appearance="fill">
+      <input matInput
+             formControlName="name">
+      <mat-hint align="end">This is required</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-label>Due Date</mat-label>
+    <input matInput
+           type="datetime"
+           [matDatepicker]="picker"
+           formControlName="dueDate">
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker-toggle [for]="picker">
+      <mat-icon> keyboard_down_arrow</mat-icon>
+    </mat-datepicker-toggle>
+  </div>
+</form>
