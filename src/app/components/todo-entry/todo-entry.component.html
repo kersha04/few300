@@ -11,6 +11,7 @@
   <div class="field-container">
     <mat-label>Due Date</mat-label>
     <input matInput
+           appearance="fill"
            type="datetime"
            [matDatepicker]="picker"
            formControlName="dueDate">
@@ -18,5 +19,21 @@
     <mat-datepicker-toggle [for]="picker">
       <mat-icon> keyboard_down_arrow</mat-icon>
     </mat-datepicker-toggle>
+  </div>
+  <div class="field-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Project</mat-label>
+      <mat-select formControlName="project">
+        <mat-option></mat-option>
+        <mat-option value="Home">Home</mat-option>
+        <mat-option value="Work">Work</mat-option>
+        <mat-option value="Fitness">Fitness</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <button type="submit"
+            mat-button>Add Item</button>
+    <button mat-button>Cancel</button>
   </div>
 </form>
