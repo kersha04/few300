@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { TodoListItem } from 'src/app/models';
+import { AppState, selectInboxItems } from 'src/app/reducers';
+import { ListComponent } from '../list/list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +14,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  inboxItems$: Observable<TodoListItem[]>;
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.inboxItems$ = this.store.select(selectInboxItems);
+    this.route.queryParams.subscribe(params => {
+      if (params.inbox) {
+        this.showInbox();
+      }
+    });
+  }
+
+  private showInbox(): void {
+    const dlg = this.dialog.open(ListComponent, { disableClose: false, data: { filter: 'inbox' } });
+
+    // trims url ?inbox=true from url after dialog closes
+    dlg.afterClosed().subscribe(_ => this.router.navigate(['dashboard']));
   }
 
 }

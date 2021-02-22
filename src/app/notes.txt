@@ -3,3 +3,6 @@ https://github.com/FrontEndWeb300/omnitodo-feb-2021
 
 --add 1s at the end to open in vs code-like state in github
 ie - https://github1s.com/FrontEndWeb300/omnitodo-feb-2021
+
+
+don't want entities relying on items in state because they will differ over time

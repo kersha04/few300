@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState, selectNumberOfInboxItems } from 'src/app/reducers';
 
 @Component({
   selector: 'app-inbox',
@@ -7,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InboxComponent implements OnInit {
 
-  constructor() { }
+  count$: Observable<number>;
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.count$ = this.store.select(selectNumberOfInboxItems);
   }
 
 }
