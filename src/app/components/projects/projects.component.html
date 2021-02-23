@@ -2,14 +2,11 @@
   <mat-card-title>Projects</mat-card-title>
   <mat-card-content>Todo Items Assigned to a Project</mat-card-content>
   <mat-card-actions>
-    <button mat-button>
-      <mat-icon>event</mat-icon> Home (3)
-    </button>
-    <button mat-button>
-      <mat-icon>event</mat-icon> Work (15)
-    </button>
-    <button mat-button>
-      <mat-icon>event</mat-icon> Fitness (6)
+    <button mat-button
+            *ngFor="let item of items$ | async">
+      <mat-chip [routerLink]=""
+                [queryParams]="{project: item.name}"></mat-chip>
+      <mat-icon>event</mat-icon> {{item.name}} ({{item.numberOfTodos}})
     </button>
   </mat-card-actions>
 </mat-card>

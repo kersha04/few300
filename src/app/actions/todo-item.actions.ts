@@ -12,9 +12,20 @@ export const todoItemAdded = createAction(
   ({ item }: { item: TodoCreate }) => ({
     payload: {
       ...item,
-      id: 'T' + fakeId++
+      id: 'T' + fakeId++,
+      completed: false
     } as TodoEntity
   })
+);
+
+export const todoItemMarkedComplete = createAction(
+  '[app] todo item marked complete',
+  props<{ item: TodoEntity }>()
+);
+
+export const todoItemMarkedIncomplete = createAction(
+  '[app] todo item marked incomplete',
+  props<{ item: TodoEntity }>()
 );
 
 

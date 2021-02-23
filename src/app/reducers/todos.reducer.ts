@@ -8,6 +8,7 @@ export interface TodoEntity {
   name: string;
   dueDate?: string;
   project?: string;
+  completed: boolean;
 
 }
 
@@ -21,16 +22,21 @@ export const adapter = createEntityAdapter<TodoEntity>();
 const initialState: TodosState = {
   ids: ['1', '2'],
   entities: {
-    1: { id: '1', name: 'Make Tacos' },
-    2: { id: '2', name: 'Clean Garage', project: 'Home' },
-    3: { id: '3', name: 'Eat Tacos', dueDate: '2021-06-15T20:39:47.000Z' },
-    4: { id: '4', name: 'Make Love', project: 'Fitness', dueDate: '2021-05-15T20:39:47.000Z' }
+    1: { id: '1', name: 'Make Tacos', completed: false },
+    2: { id: '2', name: 'Clean Garage', project: 'Home', completed: false },
+    3: { id: '3', name: 'Eat Tacos', dueDate: '2021-06-15T20:39:47.000Z', completed: false },
+    4: { id: '4', name: 'Make Love', project: 'Fitness', dueDate: '2021-05-15T20:39:47.000Z', completed: false }
   }
 };
 
 const reducerFunction = createReducer(
   initialState,
-  on(actions.todoItemAdded, (state, action) => adapter.addOne(action.payload, state))
+  on(actions.todoItemAdded, (state, action) => adapter.addOne(action.payload, state)),
+  on(actions.todoItemMarkedComplete, actions.todoItemMarkedIncomplete,
+    (state, action) => adapter.updateOne({
+      id: action.item.id,
+      changes: { completed: !action.item.completed }
+    }, state))
 );
 
 export function reducer(state: TodosState = initialState, action: Action): TodosState {
