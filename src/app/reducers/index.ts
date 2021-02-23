@@ -2,23 +2,27 @@ import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as fromTodos from './todos.reducer';
 import * as models from '../models';
 import * as fromProjects from './projects.reducer';
+import * as fromAuth from './auth.reducer';
 
 export interface AppState {
   todos: fromTodos.TodosState;
   projects: fromProjects.ProjectState;
+  auth: fromAuth.AuthState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   todos: fromTodos.reducer,
-  projects: fromProjects.reducer
+  projects: fromProjects.reducer,
+  auth: fromAuth.reducer
 };
 
 // 1 - Feature Select (done, not in a feature. we're in root)
 
 // 2 - One per branch on the state (right now, we have one called 'Todos')
-// now we have a second called projects
+// now we have a second called projects, now a third and probably more
 const selectTodosBranch = (state: AppState) => state.todos;
 const selectProjectsBranch = (state: AppState) => state.projects;
+const selectAuthBranch = (state: AppState) => state.auth;
 
 // 3 - Any helpers (not usually exported)
 const { selectAll: selectAllTodoArray } = fromTodos.adapter.getSelectors(selectTodosBranch);
@@ -61,4 +65,8 @@ export const selectTodosForProject = createSelector(
   }
 );
 
+export const selectIsLoggedIn = createSelector(
+  selectAuthBranch,
+  b => b.isLoggedIn
+);
 
