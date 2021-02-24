@@ -25,6 +25,8 @@ import { AuthEffects } from './effects/auth.effect';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { TodosDataService } from './services/todos-data-service';
 import { TodosEffects } from './effects/todos.effects';
+import { ProjectsEffects } from './effects/projects.effects';
+import { ProjectsDataService } from './services/projects-data.service';
 
 @NgModule({
   declarations: [
@@ -49,11 +51,12 @@ import { TodosEffects } from './effects/todos.effects';
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
     HttpClientModule,
-    EffectsModule.forRoot([AuthEffects, TodosEffects])
+    EffectsModule.forRoot([AuthEffects, TodosEffects, ProjectsEffects])
   ],
   providers: [
     AuthGuard,
     TodosDataService,
+    ProjectsDataService,
     // this is how we write providers that intercept, as a provider object
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true

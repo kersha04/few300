@@ -14,12 +14,14 @@
     <span>{{(item.dueDate | date:'medium') || 'No Due Date'}}</span>
     <button mat-button
             (click)="markComplete(item)"
-            *ngIf="!item.completed">
+            *ngIf="!item.completed"
+            [disabled]="!item.isSaved">
       <mat-icon>radio_button_unchecked</mat-icon>
     </button>
     <button mat-button
             (click)="markIncomplete(item)"
-            *ngIf="item.completed">
+            *ngIf="item.completed"
+            [disabled]="!item.isSaved">
       <mat-icon>radio_button_checked</mat-icon>
     </button>
   </div>

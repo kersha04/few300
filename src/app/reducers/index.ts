@@ -3,6 +3,7 @@ import * as fromTodos from './todos.reducer';
 import * as models from '../models';
 import * as fromProjects from './projects.reducer';
 import * as fromAuth from './auth.reducer';
+import { TodoListItem } from '../models';
 
 export interface AppState {
   todos: fromTodos.TodosState;
@@ -30,7 +31,9 @@ const { selectAll: selectAllProjectArray } = fromProjects.adapter.getSelectors(s
 
 const selectTodoItemsListModel = createSelector(
   selectAllTodoArray,
-  (todos) => todos as models.TodoListItem[]
+  (todos) => todos.map(todo => {
+    return { ...todo, isSaved: !todo.id.startsWith('T') } as models.TodoListItem;
+  })
 );
 
 // 4 - What your components need
@@ -58,7 +61,7 @@ export const selectProjectList = createSelector(
 // need a selector given a project, return a models.projectlistitem[] of those todos
 
 export const selectTodosForProject = createSelector(
-  selectAllTodoArray,
+  selectTodoItemsListModel,
   (todos, props: { project: string }) => {
     return todos.filter(todo => todo.project === props.project)
       .map(todo => todo as models.TodoListItem);
