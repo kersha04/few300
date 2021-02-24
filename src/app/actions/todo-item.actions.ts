@@ -28,7 +28,19 @@ export const todoItemMarkedIncomplete = createAction(
   props<{ item: TodoEntity }>()
 );
 
+export const loadTodos = createAction(
+  '[app] load todos'
+);
 
+export const loadTodosSucceeded = createAction(
+  '[app] loading todos succeeded',
+  props<{ payload: TodoEntity[] }>()
+);
+
+export const loadTodosFailed = createAction(
+  '[app] loading todos failed',
+  props<{ errorMessage: string }>()
+);
 
 // "Happy Path"
 // -> after going to the API, dispatch an action that says "Hey, you know that one with the fake id of Txx?"

@@ -18,16 +18,7 @@ export interface TodosState extends EntityState<TodoEntity> {
 
 export const adapter = createEntityAdapter<TodoEntity>();
 
-// const initialState = adapter.getInitialState();
-const initialState: TodosState = {
-  ids: ['1', '2'],
-  entities: {
-    1: { id: '1', name: 'Make Tacos', completed: false },
-    2: { id: '2', name: 'Clean Garage', project: 'Home', completed: false },
-    3: { id: '3', name: 'Eat Tacos', dueDate: '2021-06-15T20:39:47.000Z', completed: false },
-    4: { id: '4', name: 'Make Love', project: 'Fitness', dueDate: '2021-05-15T20:39:47.000Z', completed: false }
-  }
-};
+const initialState = adapter.getInitialState();
 
 const reducerFunction = createReducer(
   initialState,
@@ -36,7 +27,9 @@ const reducerFunction = createReducer(
     (state, action) => adapter.updateOne({
       id: action.item.id,
       changes: { completed: !action.item.completed }
-    }, state))
+    }, state)),
+  // set all - if there is something there already, replace it. We have a new state, folks
+  on(actions.loadTodosSucceeded, (state, action) => adapter.setAll(action.payload, state))
 );
 
 export function reducer(state: TodosState = initialState, action: Action): TodosState {

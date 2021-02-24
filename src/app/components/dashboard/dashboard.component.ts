@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { loadTodos } from 'src/app/actions/todo-item.actions';
 import { TodoListItem } from 'src/app/models';
 import { AppState, selectInboxItems } from 'src/app/reducers';
 import { ListComponent } from '../list/list.component';
@@ -14,15 +15,15 @@ import { ListComponent } from '../list/list.component';
 })
 export class DashboardComponent implements OnInit {
 
-  inboxItems$: Observable<TodoListItem[]>;
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {
+    store.dispatch(loadTodos());
+  }
 
   ngOnInit(): void {
-    this.inboxItems$ = this.store.select(selectInboxItems);
     this.route.queryParams.subscribe(params => {
       if (params.inbox) {
         this.showInbox();

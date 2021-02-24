@@ -19,9 +19,12 @@ import { reducers } from './reducers';
 import { ListComponent } from './components/list/list.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effect';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { TodosDataService } from './services/todos-data-service';
+import { TodosEffects } from './effects/todos.effects';
 
 @NgModule({
   declarations: [
@@ -46,9 +49,15 @@ import { AuthEffects } from './effects/auth.effect';
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
     HttpClientModule,
-    EffectsModule.forRoot([AuthEffects])
+    EffectsModule.forRoot([AuthEffects, TodosEffects])
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    TodosDataService,
+    // this is how we write providers that intercept, as a provider object
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
